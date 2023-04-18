@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utils/biometric_utils.dart';
 import 'package:utils/utils.dart';
 
 class LoginPage extends StatelessWidget {
@@ -11,11 +12,15 @@ class LoginPage extends StatelessWidget {
         child: Center(
           child: TextButton(
             child: const Text(" Login Page"),
-            onPressed: () {
+            onPressed: () async {
               // Test
               // Utils.launchPhoneUrl("0362326789");
               // Utils.launchMailUrl("hanh@gmail.com");
+              await Utils.saveUserIdInSharePref(
+                  userIdentifier: "userIdentifier");
+              bool isSupport = await BiometricUtils.isBiometrics();
 
+              debugPrint(" isSupport = $isSupport");
             },
           ),
         ),
