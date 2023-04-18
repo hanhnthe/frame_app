@@ -1,5 +1,5 @@
 import 'package:authentication/model/authentication_api.dart';
-import 'package:authentication/model/user_info.dart';
+import 'package:bkav_hrm_app/data/user_info_impl.dart';
 
 class Repository extends AuthenticationApi {
   @override
@@ -9,7 +9,7 @@ class Repository extends AuthenticationApi {
   }
 
   @override
-  Future<UserInfo> getUserInfo() {
+  Future<UserInfoImpl> getUserInfo() {
     // TODO: implement getUserInfo
     throw UnimplementedError();
   }

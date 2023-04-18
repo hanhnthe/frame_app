@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
   ///Bkav HoangLD : hiệu ứng chuyển giữa các page khác nhau
@@ -23,5 +24,31 @@ class Utils {
       return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => widget);
     }
+  }
+
+  ///Bkav TungDV check check man hinh ngang doc de fix loi tai tho tren ios
+  static Widget bkavCheckOrientation(BuildContext context, Widget child) {
+    return MediaQuery.of(context).orientation == Orientation.portrait
+        ? Container(child: child)
+        : SafeArea(
+            top: false,
+            child: child,
+          );
+  }
+
+  /// HanhNTHe: Lay thong tin dinh danh cua user trong sharePref
+  /// co the la userId, userName,... tuy thuoc vao project
+  static Future<String> getUserIdInSharePref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String userId = sharedPreferences.getString("user_identifier") ?? "-1";
+    return userId;
+  }
+
+  /// HanhNTHe: Lưu thong tin dinh danh cua user trong sharePref
+  /// co the la userId, userName,... tuy thuoc vao project
+  static Future<void> saveUserIdInSharePref(
+      {required String userIdentifier}) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("user_identifier", userIdentifier);
   }
 }
