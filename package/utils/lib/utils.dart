@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   ///Bkav HoangLD : hiệu ứng chuyển giữa các page khác nhau
@@ -51,4 +55,86 @@ class Utils {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("user_identifier", userIdentifier);
   }
+
+  /// Lấy thông tin version hiện tại của app
+  static Future<String> getVersionApp() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
+
+  /**------------------------START---------------------------*/
+  /* Logic để launch app tuong ung vs hanh dong -start */
+
+  /// DatNVh open link theo cach mặc định mở browser
+  static Future<void> launchInBrowser(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  /// DatNVh open GoogleMap
+  static Future<void> launchMapUrl(String address) async {
+    String encodedAddress = Uri.encodeComponent(address);
+    String googleMapUrl =
+        "https://www.google.com/maps/search/?api=1&query=$encodedAddress";
+    String appleMapUrl = "http://maps.apple.com/?q=$encodedAddress";
+    Uri googleMapUri = Uri.parse(googleMapUrl);
+    Uri appleMapUri = Uri.parse(appleMapUrl);
+    if (Platform.isAndroid) {
+      try {
+        if (await canLaunchUrl(googleMapUri)) {
+          await launchUrl(googleMapUri);
+        }
+      } catch (error) {
+        throw ("Cannot launch Google map");
+      }
+    }
+    if (Platform.isIOS) {
+      try {
+        if (await canLaunchUrl(appleMapUri)) {
+          await launchUrl(appleMapUri);
+        }
+      } catch (error) {
+        throw ("Cannot launch Apple map");
+      }
+    }
+  }
+
+  /// DatNVh open phoneCall
+  static Future<void> launchPhoneUrl(String phone) async {
+    final Uri uri = Uri(scheme: 'tel', path: phone);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw ("the action is not supported.");
+    }
+  }
+
+  /// DatNVh open email
+  static Future<void> launchMailUrl(String email) async {
+    String? encodeQueryParameters(Map<String, String> params) {
+      return params.entries
+          .map((e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          .join('&');
+    }
+
+    final Uri emailUrl = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: encodeQueryParameters(
+          <String, String>{'subject': "Content", 'body': "Content"}),
+    );
+    if (await canLaunchUrl(emailUrl)) {
+      launchUrl(emailUrl);
+    } else {
+      throw ("the action is not supported.");
+    }
+  }
+
+  /* Logic để launch app tuong ung vs hanh dong -end */
+  /**-----------------------------------END----------------------------------*/
+
+  /// DatNVh open email
 }

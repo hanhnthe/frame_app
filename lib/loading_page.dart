@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoadingPage extends StatelessWidget{
+class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
 
   static Route route() {
@@ -9,8 +9,12 @@ class LoadingPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return const Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Text("Loading..."),
+        ),
+      ),
+    );
   }
-
 }
