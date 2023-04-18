@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:authentication/model/user_info.dart';
 
-import '../authentication_status.dart';
+import 'model/authentication_status.dart';
 
 abstract class AuthenticationApi {
   final controllerAuthentication = StreamController<AuthenticationStatus>();

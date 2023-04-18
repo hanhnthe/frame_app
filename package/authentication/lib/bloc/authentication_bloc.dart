@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:authentication/model/authentication_api.dart';
+import 'package:authentication/authentication_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../authentication_status.dart';
+import '../model/authentication_status.dart';
 import '../model/user_info.dart';
 import 'authentication_event.dart';
 import 'authentication_state.dart';

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../authentication_status.dart';
+import '../model/authentication_status.dart';
 import '../model/user_info.dart';
 
 ///Bkav DucLQ khi vao ung dung xe check cac trang thai xac thuc cua tai khoan de

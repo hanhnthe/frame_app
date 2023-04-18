@@ -129,9 +129,6 @@ class BiometricUtils {
   /// Lưu mật khẩu vào trong vùng bộ nhớ an toàn (SecureStorage) để dùng khi đăng
   /// nhập bằng vân tay/ face id nếu cần
   Future<void> savePassLogin(String key, String value) async {
-    // if (isFakeData) {
-    //   return _fakeData.savePassLogin(key, value);
-    // }
     const storage = FlutterSecureStorage();
     key = key.toLowerCase();
     await storage.write(
@@ -150,9 +147,6 @@ class BiometricUtils {
   /// nhập bằng vân tay/ face id nếu cần
   Future<String?> getPassLogin(
       String key, BiometricType biometricType, BuildContext context) async {
-    // if (isFakeData) {
-    //   return _fakeData.getPassLogin(key, biometricType, context);
-    // }
     // neu nguoi dung khong duoc phep dang nhap bang local auth
     bool statusFingerprint =
         await BiometricUtils.statusFingerprint(key: key.toLowerCase());

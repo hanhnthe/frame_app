@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../authentication_status.dart';
+import '../model/authentication_status.dart';
 
 class AuthenticationEvent extends Equatable {
 

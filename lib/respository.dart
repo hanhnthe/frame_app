@@ -1,4 +1,4 @@
-import 'package:authentication/model/authentication_api.dart';
+import 'package:authentication/authentication_api.dart';
 import 'package:bkav_hrm_app/data/user_info_impl.dart';
 
 class Repository extends AuthenticationApi {

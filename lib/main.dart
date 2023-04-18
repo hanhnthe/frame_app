@@ -1,4 +1,4 @@
-import 'package:authentication/authentication_status.dart';
+import 'package:authentication/model/authentication_status.dart';
 import 'package:authentication/bloc/authentication_bloc.dart';
 import 'package:authentication/bloc/authentication_state.dart';
 import 'package:bkav_hrm_app/login_page.dart';
