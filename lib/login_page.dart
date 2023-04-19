@@ -19,8 +19,9 @@ class LoginPage extends StatelessWidget {
               await Utils.saveUserIdInSharePref(
                   userIdentifier: "userIdentifier");
               bool isSupport = await BiometricUtils.isBiometrics();
+              bool check = await BiometricUtils.checkBiometricsFaceIdIos();
 
-              debugPrint(" isSupport = $isSupport");
+              debugPrint(" isSupport = $isSupport  --- check = $check");
             },
           ),
         ),
