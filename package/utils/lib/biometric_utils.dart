@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utils/preference_utils.dart';
+import 'package:utils/shared_preferences_key.dart';
 import 'package:utils/utils.dart';
 
 /// Bkav HoangLD cac trang thai khi lay mat khau dang nhap tai khoan bang biometric
@@ -113,6 +115,7 @@ class BiometricUtils {
   //HoangLD tạo 1 channel để call native ios
   static const _channelBkav = MethodChannel('com.bkav.utils/bkav_channel');
 
+  //HoangLD check xem faceid đã được cài trên thiết bị không
   static Future<bool> checkBiometricsFaceIdIos() async {
     bool faceId = false;
     if (Platform.isIOS) {
@@ -125,7 +128,49 @@ class BiometricUtils {
     }
     return faceId;
   }
-
+  // HoangLD lưu Biometric của IOS
+  static void checkBiometricsSaveChangeIos() async{
+    if (Platform.isIOS) {
+      //final prefs = await SharedPreferences.getInstance();
+      String statusIOS = await _channelBkav.invokeMethod('getStatusBiometric');
+      await (await SharedPrefs.instance()).setString(SharedPreferencesKey.saveStatusChangeIOS, statusIOS);
+    }
+  }
+  //Bkav HoangLD call native lấy trạng thái vân tay thay đổi android
+  static Future<bool> checkBiometricsSaveChangeAndroid() async{
+    var params =  <String, String>{"accessToken":"","typeId":""};
+    bool statusAndroid = await _channelBkav.invokeMethod('getStatusBiometricAndroid', params);
+    return statusAndroid;
+  }
+  //Bkav HoangLD call native đăng nhập xong reset trạng thái vân tay trên android
+  static void resetBiometricAndroid() async{
+    var params =  <String, String>{"accessToken":"","typeId":""};
+    await _channelBkav.invokeMethod('resetBiometricAndroid',params);
+  }
+  // HoangLD check state Biometric có thay đổi không
+  static Future<bool> checkBiometricsChangeIos() async{
+    bool changeIos = true;
+    if (Platform.isIOS) {
+      //final prefs = await SharedPreferences.getInstance();
+      String checkIos = await _channelBkav.invokeMethod('getStatusBiometric');
+      String statusIOS = (await SharedPrefs.instance()).getString(SharedPreferencesKey.saveStatusChangeIOS) ?? "";
+      if(checkIos == statusIOS){
+        changeIos = false;
+      }else{
+        changeIos = true;
+      }
+    }else if(Platform.isAndroid){
+      final LocalAuthentication auth = LocalAuthentication();
+      final List<BiometricType> availableBiometrics =
+      await auth.getAvailableBiometrics();
+      if(availableBiometrics.isNotEmpty){
+        changeIos = await checkBiometricsSaveChangeAndroid();
+      }else{
+        changeIos = false;
+      }
+    }
+    return changeIos;
+  }
   /// Lưu mật khẩu vào trong vùng bộ nhớ an toàn (SecureStorage) để dùng khi đăng
   /// nhập bằng vân tay/ face id nếu cần
   Future<void> savePassLogin(String key, String value) async {
