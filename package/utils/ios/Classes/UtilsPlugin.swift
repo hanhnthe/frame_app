@@ -14,6 +14,18 @@ public class UtilsPlugin: NSObject, FlutterPlugin {
             case "getBiometricType":
                   result("\(self.biometricType)")
               break
+            case "getStatusBiometric":
+               let context = LAContext()
+                  context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,error: nil)
+               if let domainState = context.evaluatedPolicyDomainState {
+                      let bData = domainState.base64EncodedData()
+                      if let decodedString = String(data: bData, encoding: .utf8) {
+                          result("\(decodedString)")
+                      }
+                       }else{
+                           result("")
+                       }
+                    break
             default:
                 result(nil)
             }

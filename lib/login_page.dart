@@ -19,10 +19,15 @@ class LoginPage extends StatelessWidget {
               // Utils.launchMailUrl("hanh@gmail.com");
               await Utils.saveUserIdInSharePref(
                   userIdentifier: "userIdentifier");
+/*
               bool isSupport = await BiometricUtils.isBiometrics();
               bool check = await BiometricUtils.checkBiometricsFaceIdIos();
+              bool check1 = await BiometricUtils.checkBiometricsChangeIos();
 
               debugPrint(" isSupport = $isSupport  --- check = $check");
+              debugPrint(" isSupport = $isSupport  --- check1 = $check1");
+*/
+
             },
           ),
         ),
