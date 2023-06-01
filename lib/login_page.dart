@@ -10,6 +10,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Center(
+          
           child: TextButton(
             child: const Text(" Login Page"),
             onPressed: () async {
