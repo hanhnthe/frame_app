@@ -1,12 +1,43 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'utils_platform_interface.dart';
+
 class Utils {
+  Future<String?> getPlatformVersion() {
+    return UtilsPlatform.instance.getPlatformVersion();
+  }
+
+  //HoangLD tạo 1 channel để call native ios
+  static const _channelBkav = MethodChannel('com.bkav.utils/bkav_channel');
+
+  static Future<bool> checkBiometricsFaceIdIos() async {
+    bool faceId = false;
+    if (Platform.isIOS) {
+      String checkIos = await _channelBkav.invokeMethod('getBiometricType');
+      if (checkIos == "faceID") {
+        faceId = true;
+      } else {
+        faceId = false;
+      }
+    }
+    return faceId;
+  }
+
+  static Future<String> checkTestAndroid() async {
+    String checkIos = "";
+    if (Platform.isAndroid) {
+      checkIos = await _channelBkav.invokeMethod('testAndroid');
+    }
+    return checkIos;
+  }
+
   ///Bkav HoangLD : hiệu ứng chuyển giữa các page khác nhau
   static Route pageRouteBuilder(Widget widget, bool transitions) {
     if (transitions) {
